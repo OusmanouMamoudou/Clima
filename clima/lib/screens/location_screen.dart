@@ -12,11 +12,16 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  //  Variables pour stocker les données météorologiques.
+  //  Variables to store weather data.
   int? temperature, condition;
   String? cityName, iconTemp, message;
   bool loadingCity = false;
 
   WeatherModel weatherModel = WeatherModel();
+
+  //  Fonction pour mettre à jour les variables avec les données météorologiques.
+  //  Function to update variables with weather data.
   void updateVar(weatherData) {
     if (weatherData != null) {
       double temp = weatherData["main"]["temp"];
@@ -28,17 +33,21 @@ class _LocationScreenState extends State<LocationScreen> {
       message = weatherModel.getMessage(temperature!);
       return;
     } else {
+      // Dans le cas ou weatherData est null
+      // In case that weathear Data is null
       temperature = 0;
       condition = 0;
       cityName = '';
       iconTemp = 'E';
-      message = 'Impossible de récuperer les informations';
+      message = 'Impossible de récupérer les informations';
     }
   }
 
   @override
   void initState() {
     super.initState();
+    //  Mettre à jour les variables avec les données initiales.
+    //  Update variables with initial data.
     updateVar(widget.weatherData);
   }
 
@@ -48,7 +57,8 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage('images/location_background.jpg'),
+            image: const AssetImage(
+                'images/location_background.jpg'), // Arriére Plan - Background
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.8), BlendMode.dstATop),
@@ -61,48 +71,70 @@ class _LocationScreenState extends State<LocationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    //  Ligne contenant les boutons pour obtenir la météo actuelle ou choisir une ville.
+                    //  Row containing buttons to get current weather or choose a city.
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextButton(
-                          onPressed: () async {
-                            var weatherData =
-                                await weatherModel.getCurrentLocationW();
-                            updateVar(weatherData);
-                          },
-                          child: const Icon(
-                            Icons.near_me,
-                            color: Colors.white,
-                            size: 50.0,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            var city = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const CityScreen()));
-                            if (city != null) {
+                        Tooltip(
+                          message: "Selon votre Localisation",
+                          child: TextButton(
+                            onPressed: () async {
                               setState(() {
                                 loadingCity = true;
                               });
                               var weatherData =
-                                  await weatherModel.getCityNameW(city);
-
+                                  await weatherModel.getCurrentLocationW();
                               setState(() {
                                 loadingCity = false;
                                 updateVar(weatherData);
                               });
-                            }
-                          },
-                          child: const Icon(
-                            Icons.location_city,
-                            color: Colors.white,
-                            size: 50.0,
+                            },
+                            child: const Icon(
+                              Icons.near_me,
+                              color: Colors.white,
+                              size: 50.0,
+                            ),
+                          ),
+                        ),
+                        Tooltip(
+                          message: "Selon des villes",
+                          child: TextButton(
+                            onPressed: () async {
+                              var city = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CityScreen(),
+                                ),
+                              );
+                              if (city != null) {
+                                setState(() {
+                                  loadingCity =
+                                      true; // Pour lancer le chargement - To start the loading
+                                });
+                                var weatherData = await weatherModel.getCityNameW(
+                                    city); // Récuperation des données de l'écran city_screen
+
+                                setState(() {
+                                  loadingCity =
+                                      false; // Pour arretr le chargement - To stop the loading
+                                  updateVar(
+                                      weatherData); // Mise à jour de l'écran avec la ville entrée
+                                  // Updating the  screen with the typed city
+                                });
+                              }
+                            },
+                            child: const Icon(
+                              Icons.location_city,
+                              color: Colors.white,
+                              size: 50.0,
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    //  Section affichant le nom de la ville, la température et l'icône météo.
+                    //  Section displaying city name, temperature, and weather icon.
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Column(
@@ -130,6 +162,8 @@ class _LocationScreenState extends State<LocationScreen> {
                         ],
                       ),
                     ),
+                    //  Message informatif sous la section météo.
+                    //  Informative message below the weather section.
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0, bottom: 30),
                       child: Text(
@@ -140,6 +174,8 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ],
                 )
+              // Afficher le widget de chargement avec une taille de 50.
+              // Display the loading widget with a size of 50.
               : const LoadingWidget(size: 50),
         ),
       ),

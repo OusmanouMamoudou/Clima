@@ -1,5 +1,9 @@
 name: clima
-description: XYZ.
+description: Clima is a cutting-edge application developed as part of Angela Yu's bootcamp,
+            designed to provide real-time weather information. Leveraging the power of the OpenWeather API,
+            Clima fetches and displays up-to-the-minute weather data, ensuring users stay informed 
+            about the current climate conditions. With a sleek and intuitive interface, 
+            this project offers a seamless experience for users seeking accurate and timely weather updates..
 
 publish_to: 'none' 
 
@@ -24,11 +28,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^3.0.1
 
 

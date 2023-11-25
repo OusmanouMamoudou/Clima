@@ -3,12 +3,16 @@ import 'package:clima/services/networking.dart';
 import 'package:clima/utilities/constants.dart';
 
 class WeatherModel {
+  // Fonction pour obtenir les données météorologiques d'une ville spécifique.
+  // Function to get weather data for a specific city.
   Future getCityNameW(String city) async {
     NetworkHelper networkHelper = NetworkHelper("$kWeatherMap"
         "q=$city&appid=$kOpenWeatherKey&units=metric");
     return await networkHelper.getData();
   }
 
+  // Fonction pour obtenir les données météorologiques de la localisation actuelle.
+  // Function to get weather data for the current location.
   Future getCurrentLocationW() async {
     Location location = Location();
     await location.getLocation();
@@ -19,6 +23,8 @@ class WeatherModel {
     return await networkHelper.getData();
   }
 
+  // Fonction pour obtenir l'icône météorologique en fonction du code de condition.
+  // Function to get the weather icon based on the condition code.
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
@@ -39,6 +45,8 @@ class WeatherModel {
     }
   }
 
+  // Fonction pour obtenir un message en fonction de la température.
+  // Function to get a message based on the temperature.
   String getMessage(int temp) {
     if (temp > 25) {
       return " C'est l'heure du 🍦 ";
