@@ -15,7 +15,7 @@ class _LocationScreenState extends State<LocationScreen> {
   //  Variables pour stocker les données météorologiques.
   //  Variables to store weather data.
   int? temperature, condition;
-  String? cityName, iconTemp, message;
+  String? countryName, cityName, iconTemp, message;
   bool loadingCity = false;
 
   WeatherModel weatherModel = WeatherModel();
@@ -28,6 +28,8 @@ class _LocationScreenState extends State<LocationScreen> {
       temperature = temp.toInt();
       condition = weatherData["weather"][0]["id"];
       cityName = weatherData["name"];
+      String country = weatherData["sys"]["country"];
+      countryName = weatherModel.getCountry(country);
 
       iconTemp = weatherModel.getWeatherIcon(condition!);
       message = weatherModel.getMessage(temperature!);
@@ -40,6 +42,7 @@ class _LocationScreenState extends State<LocationScreen> {
       cityName = '';
       iconTemp = 'E';
       message = 'Impossible de récupérer les informations';
+      countryName = "";
     }
   }
 
@@ -146,6 +149,14 @@ class _LocationScreenState extends State<LocationScreen> {
                               style: kMessageTextStyle,
                             ),
                           ),
+                          if (countryName != "")
+                            Center(
+                              child: Text(
+                                countryName!,
+                                textAlign: TextAlign.center,
+                                style: kCountryTextStyle,
+                              ),
+                            ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -166,11 +177,19 @@ class _LocationScreenState extends State<LocationScreen> {
                     //  Informative message below the weather section.
                     Padding(
                       padding: const EdgeInsets.only(right: 15.0, bottom: 30),
-                      child: Text(
-                        message!,
-                        textAlign: TextAlign.center,
-                        style: kMessageTextStyle,
-                      ),
+                      child: kOpenWeatherKey == ""
+                          ? const SingleChildScrollView(
+                              child: Text(
+                                "Please add your  OpenWeather key to use the App. ",
+                                textAlign: TextAlign.center,
+                                style: kCountryTextStyle,
+                              ),
+                            )
+                          : Text(
+                              message!,
+                              textAlign: TextAlign.center,
+                              style: kMessageTextStyle,
+                            ),
                     ),
                   ],
                 )

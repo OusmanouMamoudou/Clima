@@ -58,4 +58,20 @@ class WeatherModel {
       return 'Prenez avec vous un  🧥 On ne sait jamais';
     }
   }
+
+  // Fonction pour obtenir un pays en fonction de la ville.
+  // Function to get a message based on the city.
+  String getCountry(String country) {
+    if (country == "CM") {
+      return "Cameroun";
+    } else if (country == "TD") {
+      return "Tchad";
+    } else if (country == "CA") {
+      return 'Canada';
+    } else if (country == "NE") {
+      return 'Niger';
+    } else {
+      return "null";
+    }
+  }
 }

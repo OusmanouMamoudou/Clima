@@ -14,6 +14,11 @@ const kMessageTextStyle = TextStyle(
   fontSize: 50.0,
 );
 
+const kCountryTextStyle = TextStyle(
+  fontFamily: 'Spartan MB',
+  fontSize: 40.0,
+);
+
 //  Style du texte pour les boutons.
 //  Text style for buttons.
 const kButtonTextStyle = TextStyle(
@@ -38,7 +43,7 @@ const kConditionTextStyle = TextStyle(
 
 //  Clé API pour OpenWeatherMap.
 //  API key for OpenWeatherMap.
-const kOpenWeatherKey = '25604c7426f983069376dcaef3158c92';
+const kOpenWeatherKey = '';
 
 //  URL de base pour interroger l'API OpenWeatherMap.
 //  Base URL to query the OpenWeatherMap API.
